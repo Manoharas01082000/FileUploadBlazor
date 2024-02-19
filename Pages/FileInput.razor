@@ -1,0 +1,34 @@
+﻿@page "/fileinput"
+@using FileUploadBlazor.Services
+@using BlazorInputFile
+@inject IFileUpload fileUpload
+
+
+<h3>File Input</h3>
+
+<BlazorInputFile.InputFile OnChange="HandleFileSelected" />
+
+@if(file != null)
+{
+    <span>File Name : @file.Name</span>
+    <br/>
+    <span>File Size : @file.Size</span>
+    <br />
+    <span>File Type : @file.Type</span>
+    <br />
+
+}
+
+    @code 
+{
+    IFileListEntry file;
+    async Task HandleFileSelected(IFileListEntry[] files)
+    {
+        file = files.FirstOrDefault();
+        if(file != null)
+        {
+            await fileUpload.Upload(file);
+        }
+    }
+
+}
